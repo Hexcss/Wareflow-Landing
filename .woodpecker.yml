@@ -1,29 +1,25 @@
-pipeline:
-  build:
+steps:
+  build-and-push:
     image: woodpeckerci/plugin-docker-buildx
     settings:
-      repo: hexcore/wareflow-landing
+      repo: hexcss/wareflow-landing
       tags: latest
       dockerfile: Dockerfile
       context: .
+    environment:
       username:
         from_secret: docker_username
       password:
         from_secret: docker_password
 
   deploy:
-    image: alpine
+    image: bitnami/kubectl:latest
     commands:
-      - apk add --no-cache curl bash
-      - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-      - chmod +x ./kubectl
-      - mv ./kubectl /usr/local/bin/kubectl
       - echo "$KUBE_CONFIG" | base64 -d > kubeconfig
       - export KUBECONFIG=$(pwd)/kubeconfig
-      - kubectl apply -f k8s/deployment.yaml
-      - kubectl apply -f k8s/service.yaml
-      - kubectl apply -f k8s/ingress.yaml
-    secrets:
-      - docker_username
-      - docker_password
-      - kube_config
+      - kubectl apply -f k8s/deployment.yaml -n hexcore-apps
+      - kubectl apply -f k8s/service.yaml -n hexcore-apps
+      - kubectl apply -f k8s/ingress.yaml -n hexcore-apps
+    environment:
+      KUBE_CONFIG:
+        from_secret: kube_config
