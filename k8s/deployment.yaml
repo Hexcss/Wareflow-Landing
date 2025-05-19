@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wareflow-landing
+  namespace: hexcore-apps
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: wareflow-landing
+  template:
+    metadata:
+      labels:
+        app: wareflow-landing
+    spec:
+      containers:
+        - name: wareflow-landing
+          image: your-dockerhub-username/wareflow-landing:latest
+          ports:
+            - containerPort: 3000

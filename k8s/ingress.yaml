@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wareflow-landing
+  namespace: hexcore-apps
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  rules:
+    - host: wareflow.hexcss.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: wareflow-landing
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - wareflow.hexcss.com
+      secretName: wareflow-landing-tls
