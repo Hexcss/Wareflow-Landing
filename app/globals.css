@@ -1,26 +1,36 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --wareflow-primary: #0D5D5E;
+  --wareflow-secondary: #40E0D0;
+  --wareflow-accent: #6AF2F0;
+  --wareflow-dark: #05161A;
+  --wareflow-light: #E0F7FA;
+  --wareflow-gray: #8DA0A8;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  body {
+    background-color: var(--wareflow-dark);
+    color: var(--wareflow-light);
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Custom scrollbar (optional, for aesthetics) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0a242c; /* Slightly lighter than body background */
+}
+::-webkit-scrollbar-thumb {
+  background: #0D5D5E; /* wareflow-primary */
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #107c7e; /* Slightly lighter primary */
 }
